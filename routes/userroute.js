@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
-const upload = multer({ storage });
+const upload = multer({ storage : storage });
 
 router.get("/", async (req, res) => {
   res.send("User Route is working... 🚀");
@@ -63,14 +63,11 @@ router.post("/report", upload.single("image"), async (req, res) => {
     if (!userId || !description) {
       return res.status(400).json({ error: "Missing userId or description" });
     }
-    let imageUrl = null;
-    if (req.file) {
-      imageUrl = `/uploads/${req.file.filename}`;
-    }
+    
     const report = new reportSchema({
       userId,
       description,
-      imageUrl,
+      imageUrl : req.file ? req.file.filename : "",
     });
     await report.save();
     return res
