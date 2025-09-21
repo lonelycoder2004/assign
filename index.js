@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const userRoute = require("./routes/userroute");
+const adminRoute = require("./routes/adminroutes");
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ mongoose.connect(process.env.MONGO_URI)
 .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 app.use(userRoute);
+app.use(adminRoute);
 
 // Start Server
 const PORT = process.env.PORT || 5000;
